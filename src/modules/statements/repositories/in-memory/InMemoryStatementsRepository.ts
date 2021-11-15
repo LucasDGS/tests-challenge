@@ -43,14 +43,12 @@ export class InMemoryStatementsRepository implements IStatementsRepository {
       }
       return acc - operation.amount;
     }, 0);
-
     if (with_statement) {
       return {
         statement,
         balance,
       };
     }
-
     return { balance };
   }
 }

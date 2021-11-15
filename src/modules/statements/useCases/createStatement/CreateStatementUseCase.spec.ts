@@ -26,18 +26,6 @@ describe("Create Statement", () => {
     );
   });
 
-  it("Should not be able to create a statement when user not exists ", async () => {
-    expect(async () => {
-      const depositOp: ICreateStatementDTO = {
-        user_id: "any_id",
-        amount: 150,
-        description: "pagamento de salário",
-        type: OperationType.DEPOSIT,
-      };
-      await createStatementUseCase.execute(depositOp);
-    }).rejects.toBeInstanceOf(CreateStatementError.UserNotFound);
-  });
-
   it("Should be able to create a new Statement with deposit type", async () => {
     const userData: ICreateUserDTO = {
       name: "Lucas",
@@ -57,6 +45,17 @@ describe("Create Statement", () => {
     expect(statement).toHaveProperty("id");
     expect(statement.amount).toEqual(newStatement.amount);
     expect(statement.type).toEqual(newStatement.type);
+  });
+  it("Should not be able to create a statement when user not exists ", async () => {
+    expect(async () => {
+      const depositOp: ICreateStatementDTO = {
+        user_id: "any_id",
+        amount: 150,
+        description: "pagamento de salário",
+        type: OperationType.DEPOSIT,
+      };
+      await createStatementUseCase.execute(depositOp);
+    }).rejects.toBeInstanceOf(CreateStatementError.UserNotFound);
   });
 
   it("Should not be able to create a statement with withdraw type when user hasn't money", async () => {
