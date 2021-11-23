@@ -42,6 +42,15 @@ describe("Get Balance - Test Integration", () => {
       .set({
         Authorization: `Bearer ${token}`,
       });
+    await request(app)
+      .post("/statements/withdraw")
+      .send({
+        amount: 40,
+        description: "Debit test",
+      })
+      .set({
+        Authorization: `Bearer ${token}`,
+      });
     const balance = await request(app)
       .get("/statements/balance")
       .set({
