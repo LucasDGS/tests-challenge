@@ -30,7 +30,7 @@ class TransferBetweenAccountsUseCase {
     description,
     sender_user_id,
     receiver_user_id,
-  }: IRequest): Promise<void> {
+  }: IRequest): Promise<any> {
     const user = await this.usersRepository.findById(sender_user_id);
 
     if (!user) {
@@ -45,13 +45,15 @@ class TransferBetweenAccountsUseCase {
       throw new TransferBetweenAccountsError.InsufficientFunds();
     }
 
-    await this.statementsRepository.create({
+    const transferStatements = await this.statementsRepository.create({
       user_id: sender_user_id,
       amount,
       description,
       type: OperationType.TRANSFER,
       receiver_user_id,
     });
+
+    return transferStatements;
   }
 }
 
